@@ -1,8 +1,8 @@
-# De:dobe
+# De:dobe Exporter
 
 **Your data belongs to you.**
 
-De:dobe is a browser extension that exports your AI conversations to standard formats. No paywalls, no limits, no tracking. Just liberation technology.
+De:dobe Exporter is a browser extension that exports your AI conversations to standard formats. No paywalls, no limits, no tracking. Just liberation technology.
 
 Version 1.0 supports Grok conversations. Multi-platform support coming in v2.0.
 
@@ -41,7 +41,7 @@ Chrome Web Store support planned after Firefox validation.
 ## Usage
 
 1. Open any Grok conversation at [grok.com](https://grok.com) or [x.com/i/grok](https://x.com/i/grok)
-2. Click the De:dobe icon in your browser toolbar
+2. Click the De:dobe Exporter icon in your browser toolbar
 3. Click "Export Conversation"
 4. Your conversation downloads instantly
 
@@ -78,13 +78,13 @@ One extension, all your AI conversations.
 
 We don't monetize your data. We don't track your usage. We don't lock features behind paywalls.
 
-If De:dobe helps you, consider [supporting the project](https://ko-fi.com/blackorchardlabs). But support is never required. The ladder is free for everyone.
+If De:dobe Exporter helps you, consider [supporting the project](https://ko-fi.com/blackorchardlabs). But support is never required. The ladder is free for everyone.
 
 ---
 
 ## Support This Project
 
-De:dobe is free and open source. If you find it useful, you can support development:
+De:dobe Exporter is free and open source. If you find it useful, you can support development:
 
 **[Buy us a coffee on Ko-fi](https://ko-fi.com/blackorchardlabs)**
 
@@ -189,4 +189,4 @@ Open an issue on GitHub with:
 
 ---
 
-**De:dobe v1.0** - Your conversations, your data, your freedom.
+**De:dobe Exporter v1.0** - Your conversations, your data, your freedom.

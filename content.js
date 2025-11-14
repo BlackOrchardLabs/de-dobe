@@ -122,4 +122,4 @@ function showNotification(message, isError = false) {
   }, 3000);
 }
 
-console.log('Black Orchard Grok Exporter loaded');
+console.log('De:dobe Exporter loaded');
