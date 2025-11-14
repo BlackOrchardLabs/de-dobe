@@ -1,0 +1,8 @@
+blank_issues_enabled: true
+contact_links:
+  - name: GitHub Discussions
+    url: https://github.com/BlackOrchardLabs/de-dobe/discussions
+    about: Ask questions, share ideas, or discuss De:dobe
+  - name: Ko-fi Support
+    url: https://ko-fi.com/blackorchardlabs
+    about: Support the development of De:dobe
