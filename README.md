@@ -4,7 +4,7 @@
 
 **Your data belongs to you.**
 
-De:dobe Extractor is a browser extension that exports your AI conversations from major LLM platforms to standard formats. No paywalls, no limits, no tracking. Just liberation technology.
+Export your AI conversations - your data belongs to you. No paywalls, no limits.
 
 **Version 2.0** - Now with multi-platform support!
 
