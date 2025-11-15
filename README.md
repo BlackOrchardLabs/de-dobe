@@ -27,7 +27,9 @@ Export your full AI conversations from multiple platforms to Markdown, JSON, or 
 
 ## Installation
 
-### Firefox (Primary)
+### Firefox
+
+**Minimum version required: Firefox 121.0+**
 
 **Temporary Installation (for testing):**
 1. Download or clone this repository
@@ -40,9 +42,20 @@ Export your full AI conversations from multiple platforms to Markdown, JSON, or 
 **Permanent Installation:**
 Coming soon to Firefox Add-ons store.
 
-### Chrome
+### Chrome / Edge
 
-Chrome Web Store support planned after Firefox validation.
+**Compatible with Manifest V3**
+
+1. Download or clone this repository
+2. Open `chrome://extensions` (or `edge://extensions`)
+3. Enable "Developer mode" (toggle in top right)
+4. Click "Load unpacked"
+5. Select the de-dobe folder
+6. Extension is now installed
+
+Chrome Web Store submission planned for v2.1.
+
+**Note:** See [CROSS_BROWSER.md](CROSS_BROWSER.md) for technical details on cross-browser compatibility.
 
 ---
 
@@ -145,6 +158,7 @@ We welcome contributions! See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
 **Technology:**
 - Pure JavaScript (no frameworks)
 - WebExtensions API (Manifest v3)
+- Cross-browser compatible (Firefox 121+, Chrome, Edge)
 - Modular extractor architecture
 - Zero dependencies
 

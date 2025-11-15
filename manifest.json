@@ -26,6 +26,7 @@
   ],
 
   "background": {
+    "scripts": ["background.js"],
     "service_worker": "background.js"
   },
 
@@ -65,7 +66,7 @@
   "browser_specific_settings": {
     "gecko": {
       "id": "dedobe-extractor@blackorchard.local",
-      "strict_min_version": "109.0"
+      "strict_min_version": "121.0"
     }
   }
 }
