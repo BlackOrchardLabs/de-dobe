@@ -39,9 +39,22 @@ async function refresh() {
 }
 
 function download(name, content, mime) {
-  const blob = new Blob([content], { type: mime });
-  const url = URL.createObjectURL(blob);
-  browser.downloads.download({ url, filename: name, saveAs: true });
+  console.log('[De:dobe Popup] Starting download:', { name, mime, contentLength: content.length });
+  try {
+    const blob = new Blob([content], { type: mime });
+    const url = URL.createObjectURL(blob);
+    console.log('[De:dobe Popup] Blob URL created:', url);
+
+    browser.downloads.download({ url, filename: name, saveAs: true })
+      .then(downloadId => {
+        console.log('[De:dobe Popup] Download started with ID:', downloadId);
+      })
+      .catch(err => {
+        console.error('[De:dobe Popup] Download failed:', err);
+      });
+  } catch (error) {
+    console.error('[De:dobe Popup] Error creating download:', error);
+  }
 }
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -49,7 +62,11 @@ document.addEventListener("DOMContentLoaded", () => {
   refresh();
 
   document.getElementById("export-md").onclick = () => {
-    if (!currentConversation) return;
+    console.log('[De:dobe Popup] Export MD clicked');
+    if (!currentConversation) {
+      console.log('[De:dobe Popup] No conversation to export');
+      return;
+    }
 
     // Format as proper markdown
     let markdown = `# ${currentConversation.platform.toUpperCase()} Conversation Export\n\n`;
@@ -72,12 +89,20 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
   document.getElementById("export-json").onclick = () => {
-    if (!currentConversation) return;
+    console.log('[De:dobe Popup] Export JSON clicked');
+    if (!currentConversation) {
+      console.log('[De:dobe Popup] No conversation to export');
+      return;
+    }
     download("conversation.json", JSON.stringify(currentConversation, null, 2), "application/json");
   };
 
   document.getElementById("export-txt").onclick = () => {
-    if (!currentConversation) return;
+    console.log('[De:dobe Popup] Export TXT clicked');
+    if (!currentConversation) {
+      console.log('[De:dobe Popup] No conversation to export');
+      return;
+    }
     const txt = currentConversation.messages
       .map(m => `${m.role.toUpperCase()}: ${m.content}`)
       .join("\n\n");
