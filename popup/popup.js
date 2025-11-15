@@ -45,15 +45,26 @@ function download(name, content, mime) {
     const url = URL.createObjectURL(blob);
     console.log('[De:dobe Popup] Blob URL created:', url);
 
-    browser.downloads.download({ url, filename: name, saveAs: true })
-      .then(downloadId => {
-        console.log('[De:dobe Popup] Download started with ID:', downloadId);
-      })
-      .catch(err => {
-        console.error('[De:dobe Popup] Download failed:', err);
-      });
+    // Create a hidden download link and click it
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = name;
+    a.style.display = 'none';
+
+    document.body.appendChild(a);
+    console.log('[De:dobe Popup] Download link created, triggering click');
+    a.click();
+
+    // Cleanup after a delay
+    setTimeout(() => {
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+      console.log('[De:dobe Popup] Download cleanup complete');
+    }, 1000);
+
   } catch (error) {
     console.error('[De:dobe Popup] Error creating download:', error);
+    alert('Error creating download: ' + error.message);
   }
 }
 
