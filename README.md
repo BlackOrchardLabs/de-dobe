@@ -1,21 +1,29 @@
-# De:dobe Exporter
+# De:dobe: Extractor – LLM Thread Extractor
 
 **Your data belongs to you.**
 
-De:dobe Exporter is a browser extension that exports your AI conversations to standard formats. No paywalls, no limits, no tracking. Just liberation technology.
+De:dobe Extractor is a browser extension that exports your AI conversations from major LLM platforms to standard formats. No paywalls, no limits, no tracking. Just liberation technology.
 
-Version 1.0 supports Grok conversations. Multi-platform support coming in v2.0.
+**Version 2.0** - Now with multi-platform support!
 
 ---
 
 ## What This Does
 
-Export your full Grok conversations to Markdown, plain text, or JSON with one click.
+Export your full AI conversations from multiple platforms to Markdown, JSON, or plain text with one click.
 
+**Supported Platforms:**
+- **ChatGPT** (chatgpt.com, chat.openai.com)
+- **Claude** (claude.ai)
+- **Gemini** (gemini.google.com)
+- **Grok** (grok.x.ai, chat.x.ai, grok.com, x.com/i/grok)
+
+**Features:**
 - **No message limits** - Export conversations of any length
 - **No paid tiers** - Completely free, forever
 - **No tracking** - Zero analytics, everything happens locally
 - **Your data** - Own your conversations, back them up, archive them
+- **Multi-format export** - Markdown, JSON, and plain text
 
 ## Installation
 
@@ -40,35 +48,41 @@ Chrome Web Store support planned after Firefox validation.
 
 ## Usage
 
-1. Open any Grok conversation at [grok.com](https://grok.com) or [x.com/i/grok](https://x.com/i/grok)
-2. Click the De:dobe Exporter icon in your browser toolbar
-3. Click "Export Conversation"
+1. Open any supported AI conversation (ChatGPT, Claude, Gemini, or Grok)
+2. Click the De:dobe Extractor icon in your browser toolbar
+3. Choose your export format:
+   - **Export as Markdown** - Formatted conversation with headers
+   - **Export as JSON** - Structured data with metadata
+   - **Export as Text** - Simple plain text format
 4. Your conversation downloads instantly
-
-**Current export format:** Markdown
-**Coming in v1.0:** Plain text, JSON, customizable settings
 
 ---
 
 ## Roadmap
 
-### v1.0 (Current Development)
-- [x] Basic Grok conversation export
-- [ ] Multiple export formats (Markdown, Plain Text, JSON)
-- [ ] Settings panel (file naming, save location preferences)
+### v2.0 (Current)
+- [x] Multi-platform support (ChatGPT, Claude, Gemini, Grok)
+- [x] Multiple export formats (Markdown, JSON, Plain Text)
+- [x] Platform-specific extractors architecture
+- [x] Manifest v3 support
+- [x] Cross-browser compatibility (Firefox + Chrome)
 - [ ] Enhanced error handling and user feedback
+- [ ] Settings panel (file naming, save location preferences)
+- [ ] AEON stub integration option
 - [ ] Purple brain icon with rounded corners
-- [ ] Ko-fi integration for optional support
-- [ ] Minimal metadata (export date, conversation length, version)
 
-### v2.0 (Planned)
-Multi-platform support for universal AI conversation export:
-- ChatGPT
-- Claude
-- DeepSeek
-- Gemini
+### v2.1 (Planned)
+- [ ] DeepSeek support
+- [ ] Perplexity support
+- [ ] Custom filename templates
+- [ ] Batch export functionality
+- [ ] Export history and favorites
 
-One extension, all your AI conversations.
+### v3.0 (Future)
+- [ ] Advanced filtering (date ranges, keyword search)
+- [ ] Custom export templates
+- [ ] API for integration with other tools
+- [ ] Plugin system for community extractors
 
 ---
 
@@ -130,8 +144,28 @@ We welcome contributions! See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
 
 **Technology:**
 - Pure JavaScript (no frameworks)
-- WebExtensions API
+- WebExtensions API (Manifest v3)
+- Modular extractor architecture
 - Zero dependencies
+
+**Architecture:**
+```
+de-dobe/
+├── background.js           # Service worker for message handling
+├── manifest.json          # Extension configuration (v3)
+├── content/
+│   └── content.js         # Main content script with platform detection
+├── extractors/            # Platform-specific extraction modules
+│   ├── chatgpt.js
+│   ├── claude.js
+│   ├── gemini.js
+│   ├── grok.js
+│   └── generic.js         # Fallback extractor
+└── popup/                 # Extension popup UI
+    ├── popup.html
+    ├── popup.js
+    └── popup.css
+```
 
 **License:** MIT - see [LICENSE](LICENSE)
 
@@ -146,7 +180,7 @@ A: A play on "decode" - liberating your data from encoded, walled platforms.
 A: Yes. Completely free. Support is appreciated but never required.
 
 **Q: Will you add [other AI platform]?**
-A: Yes! Multi-platform support is the core goal for v2.0. ChatGPT, Claude, DeepSeek, and Gemini are all planned.
+A: We now support ChatGPT, Claude, Gemini, and Grok in v2.0! DeepSeek and Perplexity are planned for v2.1. Request other platforms via GitHub issues.
 
 **Q: Can I modify this for my own use?**
 A: Absolutely. MIT license. Fork it, modify it, use it however you want.
@@ -167,26 +201,66 @@ A: No. You're exporting your own conversations from your own browser. This is yo
 ## Troubleshooting
 
 **Extension icon doesn't appear:**
-- Ensure you're on grok.com or x.com/i/grok
+- Ensure you're on a supported platform (ChatGPT, Claude, Gemini, or Grok)
 - Refresh the page after installing
-- Check `about:debugging` to confirm extension is loaded
+- Check `about:debugging` (Firefox) or `chrome://extensions` (Chrome) to confirm extension is loaded
 
 **Export seems incomplete:**
-- Scroll through the entire conversation first (Grok loads messages dynamically)
+- Scroll through the entire conversation first (platforms load messages dynamically)
 - Then trigger the export
+- For very long conversations, allow a few seconds for extraction
+
+**"No thread detected" message:**
+- Ensure you're on a conversation page, not the home screen
+- Try refreshing the page and opening the popup again
+- Some platforms may have changed their DOM structure - report this via GitHub issues
 
 **No download happens:**
-- Check Firefox download permissions
+- Check browser download permissions
 - Check Downloads folder
 - Open browser console (F12) for error messages
+- Ensure pop-ups aren't blocked
+
+**Platform not extracting correctly:**
+Different platforms update their interfaces frequently. If extraction fails:
+1. Check GitHub issues to see if it's a known problem
+2. Open a new issue with the platform name and browser console errors
+3. We'll update the extractor module ASAP
 
 **Still having issues?**
 Open an issue on GitHub with:
-- Browser version
+- Platform name (ChatGPT, Claude, Gemini, Grok)
+- Browser and version
 - Operating system
 - Steps to reproduce the problem
 - Console errors (if any)
+- Screenshot of the conversation page (optional)
 
 ---
 
-**De:dobe Exporter v1.0** - Your conversations, your data, your freedom.
+## Contributing Extractors
+
+Want to add support for a new platform? The extractor architecture makes it easy:
+
+1. Create a new file in `extractors/yourplatform.js`
+2. Implement the extraction function:
+   ```javascript
+   window.DeDobeExtractors = window.DeDobeExtractors || {};
+
+   window.DeDobeExtractors.yourplatform = async function() {
+     return {
+       platform: 'yourplatform',
+       messages: [{ role: 'user|assistant', content: '...' }],
+       meta: { url: window.location.href, timestamp: new Date().toISOString() }
+     };
+   };
+   ```
+3. Add platform detection in `content/content.js`
+4. Update `manifest.json` with host permissions and content script matches
+5. Submit a pull request!
+
+See existing extractors for reference implementations.
+
+---
+
+**De:dobe: Extractor v2.0** - Your conversations, your data, your freedom.
