@@ -1,19 +1,40 @@
 // Cross-browser compatibility
 const browser = globalThis.browser || globalThis.chrome;
 
+console.log('[De:dobe Popup] Popup script loaded');
+
 let currentConversation = null;
 
 async function refresh() {
+  console.log('[De:dobe Popup] Refresh called');
   document.getElementById("status").textContent = "Capturing...";
-  await browser.runtime.sendMessage({ type: "ORCHARD_LOOM_POPUP_REQUEST_EXTRACT" });
-  const data = await browser.runtime.sendMessage({ type: "ORCHARD_LOOM_POPUP_REQUEST_DATA" });
 
-  if (data && data.messages?.length) {
-    currentConversation = data;
-    document.getElementById("status").textContent =
-      `Captured ${data.messages.length} messages from ${data.platform}`;
-  } else {
-    document.getElementById("status").textContent = "No thread detected.";
+  try {
+    console.log('[De:dobe Popup] Sending extract request');
+    await browser.runtime.sendMessage({ type: "ORCHARD_LOOM_POPUP_REQUEST_EXTRACT" });
+
+    // Add small delay to allow extraction to complete
+    await new Promise(resolve => setTimeout(resolve, 500));
+
+    console.log('[De:dobe Popup] Requesting data');
+    const data = await browser.runtime.sendMessage({ type: "ORCHARD_LOOM_POPUP_REQUEST_DATA" });
+    console.log('[De:dobe Popup] Received data:', data);
+
+    if (data && data.messages?.length) {
+      currentConversation = data;
+      console.log('[De:dobe Popup] Conversation set:', {
+        platform: data.platform,
+        messageCount: data.messages.length
+      });
+      document.getElementById("status").textContent =
+        `Captured ${data.messages.length} messages from ${data.platform}`;
+    } else {
+      console.log('[De:dobe Popup] No messages found in data');
+      document.getElementById("status").textContent = "No thread detected.";
+    }
+  } catch (error) {
+    console.error('[De:dobe Popup] Error during refresh:', error);
+    document.getElementById("status").textContent = "Error: " + error.message;
   }
 }
 
@@ -24,6 +45,7 @@ function download(name, content, mime) {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
+  console.log('[De:dobe Popup] DOM loaded, starting refresh');
   refresh();
 
   document.getElementById("export-md").onclick = () => {
