@@ -16,3 +16,18 @@ button {
   cursor: pointer;
   margin-bottom: 6px;
 }
+.support {
+  margin-top: 12px;
+  padding-top: 8px;
+  border-top: 1px solid #1a1a2e;
+  text-align: center;
+}
+.support a {
+  color: #9aa0b3;
+  font-size: 11px;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+.support a:hover {
+  color: #ff46c7;
+}

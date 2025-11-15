@@ -1,5 +1,7 @@
 # De:dobe: Extractor – LLM Thread Extractor
 
+[![Ko-fi](https://img.shields.io/badge/Support%20on-Ko--fi-FF5E5B?logo=ko-fi&logoColor=white)](https://ko-fi.com/blackorchardlabs)
+
 **Your data belongs to you.**
 
 De:dobe Extractor is a browser extension that exports your AI conversations from major LLM platforms to standard formats. No paywalls, no limits, no tracking. Just liberation technology.
