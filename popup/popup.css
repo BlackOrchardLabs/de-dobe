@@ -31,3 +31,52 @@ button {
 .support a:hover {
   color: #ff46c7;
 }
+.toggle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 10px;
+  font-size: 13px;
+}
+.buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.warning-box {
+  background: #2a1f0a;
+  border: 2px solid #ff9800;
+  border-radius: 8px;
+  padding: 10px;
+  margin-bottom: 12px;
+  display: flex;
+  gap: 8px;
+  font-size: 12px;
+}
+.warning-icon {
+  font-size: 20px;
+  flex-shrink: 0;
+}
+.warning-content strong {
+  color: #ff9800;
+  display: block;
+  margin-bottom: 6px;
+}
+.warning-content p {
+  margin: 0 0 8px 0;
+  line-height: 1.4;
+  color: #e8e8f2;
+}
+.warning-content ol {
+  margin: 0;
+  padding-left: 18px;
+  line-height: 1.5;
+  color: #e8e8f2;
+}
+.warning-content ol li {
+  margin-bottom: 4px;
+}
+.warning-content ol li strong {
+  display: inline;
+  color: #ff9800;
+}
