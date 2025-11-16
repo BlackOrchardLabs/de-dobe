@@ -279,4 +279,18 @@ See existing extractors for reference implementations.
 
 ---
 
-**De:dobe: Extractor v2.0** - Your conversations, your data, your freedom.
+
+## About Black Orchard Labs
+
+**Mission: Data Autonomy**
+
+*"Measuring the unmeasurable where your data is your own"*
+
+Building tools for data autonomy. Your conversations, your voice, your identity - under YOUR control. Because if corporations get IP protection for their data, you should own yours.
+
+**De:dobe: Extractor v2.0** - Liberation technology for the AI age.
+
+---
+
+**Black Orchard Labs**  
+https://github.com/BlackOrchardLabs
