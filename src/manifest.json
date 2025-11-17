@@ -1,0 +1,41 @@
+{
+  "manifest_version": 3,
+  "name": "De:dobe: Extractor – LLM Thread Extractor",
+  "version": "0.1.0",
+  "description": "Extract and export conversations from major LLMs into Markdown, JSON, and text.",
+  "permissions": ["activeTab", "downloads", "storage"],
+  "host_permissions": [
+    "https://chatgpt.com/*",
+    "https://chat.openai.com/*",
+    "https://claude.ai/*",
+    "https://gemini.google.com/*",
+    "https://grok.x.ai/*",
+    "https://chat.x.ai/*"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "action": {
+    "default_popup": "popup/popup.html"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "https://chatgpt.com/*",
+        "https://chat.openai.com/*",
+        "https://claude.ai/*",
+        "https://gemini.google.com/*",
+        "https://grok.x.ai/*",
+        "https://chat.x.ai/*"
+      ],
+      "js": ["content/content.js"],
+      "run_at": "document_idle"
+    }
+  ],
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "dedobe-extractor@blackorchard.local",
+      "strict_min_version": "109.0"
+    }
+  }
+}

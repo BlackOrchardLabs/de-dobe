@@ -1,0 +1,31 @@
+# Build outputs
+builds/*.zip
+
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Logs
+*.log
+npm-debug.log*
+
+# Temporary files
+*.tmp
+*.temp
+.cache/
+
+# Browser extension store files (keep the source, not the packaged versions in git)
+*.crx
+*.xpi
+
+# Node modules (if you add build tools later)
+node_modules/
+package-lock.json
