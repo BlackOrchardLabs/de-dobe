@@ -1,0 +1,16 @@
+--- /dev/null
++++ b/src/background-worker.js
+@@ -0,0 +1,13 @@
++/* background-worker.js – service worker for Turndown offloading */
++import TurndownService from './lib/turndown.js';
++
++const td = new TurndownService({ headingStyle: 'atx', bulletListMarker: '-' });
++
++chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
++  if (msg.type === 'convert') {
++    const markdown = td.turndown(msg.html);
++    sendResponse({ markdown });
++  }
++  return true;  // Required for async sendResponse
++});
++

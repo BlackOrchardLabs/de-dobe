@@ -1,0 +1,20 @@
+--- a/src/manifest.json
++++ b/src/manifest.json
+@@ -2,6 +2,7 @@
+   "manifest_version": 3,
+   "name": "De:dobe: Extractor – LLM Thread Extractor",
+   "version": "1.1.0",
++  "update_url": "https://clients2.google.com/service/update2/crx",
+   "description": "Extract and export conversations from major LLMs into Markdown, JSON, and text.",
+   "permissions": ["activeTab", "downloads", "storage"],
+   "host_permissions": [
+@@ -35,7 +36,8 @@
+   "browser_specific_settings": {
+     "gecko": {
+       "id": "dedobe-extractor@blackorchard.local",
+-      "strict_min_version": "109.0"
++      "strict_min_version": "109.0",
++      "update_url": "https://raw.githubusercontent.com/BlackOrchardLabs/de-dobe/main/updates.json"
+     }
+   }
+ }

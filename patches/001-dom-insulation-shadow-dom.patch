@@ -1,0 +1,24 @@
+--- a/src/content/content.js
++++ b/src/content/content.js
+@@ -1,5 +1,6 @@
+ (function () {
+   const DEBOUNCE_MS = 200;
++  const SEEN = new Set();               // dedup by text hash
+
+   /* ---------- 1.  inject stable ids ---------- */
+   function tagNodes() {
+@@ -7,6 +8,15 @@
+       if (!n.dataset.dedobeId) n.dataset.dedobeId = crypto.randomUUID();
+     });
++    // pierce shadow roots
++    const walker = document.createNodeIterator(
++      document.body, NodeFilter.SHOW_TEXT, null
++    );
++    let txt;
++    while ((txt = walker.nextNode())) {
++      const host = txt.getRootNode().host;
++      if (host && !host.dataset.dedobeId) host.dataset.dedobeId = crypto.randomUUID();
++    }
+   }
+
+   /* ---------- 2.  extract text ---------- */

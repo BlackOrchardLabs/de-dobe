@@ -1,0 +1,16 @@
+--- a/src/content/content.js
++++ b/src/content/content.js
+@@ -90,4 +90,13 @@
+
+   const observer = new MutationObserver(debounceExtract);
+   observer.observe(document.body, {childList: true, subtree: true});
++
++  // Last-ditch fallback: if observer dies, fall back to brute 5-second poll
++  setInterval(() => {
++    if (document.querySelectorAll('[data-dedobe-id]').length === 0) {
++      console.log('[De:dobe] Fallback recovery: rebuilding selectors');
++      tagNodes();                        // rebuild selectors
++      extractAndStore();
++    }
++  }, 5000);
+ })();

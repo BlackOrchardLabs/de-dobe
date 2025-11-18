@@ -1,0 +1,32 @@
+--- a/src/popup/popup.js
++++ b/src/popup/popup.js
+@@ -1,5 +1,23 @@
+ /* popup.js - telemetry integration */
+
++async function pingSuccess(blobLen) {
++  const optedIn = await chrome.storage.sync.get('telemetry');
++  if (optedIn.telemetry === false) return;          // explicit opt-out
++
++  try {
++    fetch('https://telemetry.blackorchardlabs.com/dedobe', {
++      method: 'POST',
++      body: JSON.stringify({
++        v: 1,
++        host: location.host,
++        bytes: blobLen
++      }),
++      headers: {'Content-Type': 'application/json'}
++    }).catch(() => {});                               // fire-and-forget
++  } catch (e) {
++    // Silent fail - telemetry is optional
++  }
++}
++
+ // Export handlers
+ async function exportMarkdown() {
+   const data = await extractConversation();
+@@ -7,6 +25,7 @@
+     downloadFile(markdown, 'conversation.md', 'text/markdown');
++    await pingSuccess(markdown.length);
+   }
+ }

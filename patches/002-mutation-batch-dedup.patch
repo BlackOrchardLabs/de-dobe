@@ -1,0 +1,16 @@
+--- a/src/content/content.js
++++ b/src/content/content.js
+@@ -15,10 +25,12 @@
+   }
+
+   function extractText() {
+-    const nodes = document.querySelectorAll('[data-dedobe-id]');
++    const nodes = document.querySelectorAll('[data-dedobe-id]');
+     return Array.from(nodes)
+       .map(n => n.innerText || n.textContent || '')
+       .join('\n')
++      .replace(/\s+/g, ' ')
++      .trim();
+   }
+
+   const debounce = (fn, ms) => {
