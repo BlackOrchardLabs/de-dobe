@@ -46,13 +46,44 @@ function whenReady() {
       console.error("Extractor error:", e);
     }
 
-    api.runtime.sendMessage({
-      type: "ORCHARD_LOOM_CONVO",
-      payload: data
-    });
+    // Send extracted data to background
+    if (isChrome) {
+      // Chrome: use callback-based sendMessage
+      api.runtime.sendMessage({
+        type: "ORCHARD_LOOM_CONVO",
+        payload: data
+      }, (response) => {
+        // Response received (if any)
+      });
+    } else {
+      // Firefox: Promise-based
+      api.runtime.sendMessage({
+        type: "ORCHARD_LOOM_CONVO",
+        payload: data
+      });
+    }
+
+    return data;
   }
 
-  api.runtime.onMessage.addListener((msg) => {
-    if (msg.type === "ORCHARD_LOOM_REQUEST_EXTRACT") extractConversation();
+  api.runtime.onMessage.addListener((msg, sender, sendResponse) => {
+    if (msg.type === "ORCHARD_LOOM_REQUEST_EXTRACT") {
+      if (isChrome) {
+        // Chrome: wrap async extraction in IIFE and resolve promise
+        (async () => {
+          try {
+            const data = await extractConversation();
+            sendResponse({ ok: true, data: data });
+          } catch (e) {
+            sendResponse({ error: e.message });
+          }
+        })();
+        return true; // Tell Chrome we'll respond async
+      } else {
+        // Firefox: Promise-based
+        return extractConversation();
+      }
+    }
+    return false; // No async response for other messages
   });
 })();
