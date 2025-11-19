@@ -12,6 +12,7 @@ mkdir -p builds/chrome
 cp src/manifest.chrome.json builds/chrome/manifest.json
 cp src/background.js builds/chrome/
 cp -r src/content builds/chrome/
+cp -r src/extractors builds/chrome/
 cp -r src/popup builds/chrome/
 
 # Create zip archive

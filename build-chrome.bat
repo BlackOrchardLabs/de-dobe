@@ -12,6 +12,7 @@ REM Copy files from src
 copy src\manifest.chrome.json builds\chrome\manifest.json
 copy src\background.js builds\chrome\
 xcopy src\content builds\chrome\content\ /E /I /Y
+xcopy src\extractors builds\chrome\extractors\ /E /I /Y
 xcopy src\popup builds\chrome\popup\ /E /I /Y
 
 REM Create zip archive using PowerShell

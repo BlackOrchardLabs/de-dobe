@@ -12,6 +12,7 @@ REM Copy files from src
 copy src\manifest.json builds\firefox\
 copy src\background.js builds\firefox\
 xcopy src\content builds\firefox\content\ /E /I /Y
+xcopy src\extractors builds\firefox\extractors\ /E /I /Y
 xcopy src\popup builds\firefox\popup\ /E /I /Y
 
 REM Create zip archive using PowerShell

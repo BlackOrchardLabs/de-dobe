@@ -29,9 +29,15 @@
         "https://grok.x.ai/*",
         "https://chat.x.ai/*"
       ],
-      "js": ["content/content.js"],
-      "run_at": "document_end",
-      "world": "ISOLATED"
+      "js": [
+        "extractors/grok.js",
+        "extractors/chatgpt.js",
+        "extractors/claude.js",
+        "extractors/gemini.js",
+        "extractors/generic.js",
+        "content/content.js"
+      ],
+      "run_at": "document_idle"
     }
   ]
 }

@@ -12,6 +12,7 @@ mkdir -p builds/firefox
 cp src/manifest.json builds/firefox/
 cp src/background.js builds/firefox/
 cp -r src/content builds/firefox/
+cp -r src/extractors builds/firefox/
 cp -r src/popup builds/firefox/
 
 # Create zip archive
