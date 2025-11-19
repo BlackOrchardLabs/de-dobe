@@ -1,5 +1,6 @@
 # Build outputs
 builds/*.zip
+builds/verify-*/
 
 # OS files
 .DS_Store
