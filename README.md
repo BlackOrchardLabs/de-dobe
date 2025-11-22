@@ -16,6 +16,41 @@ A browser extension that extracts and exports conversations from major LLM platf
 - Privacy-focused: All processing happens locally (no external servers)
 - Cross-browser support: Firefox and Chrome
 
+## Roadmap
+
+### v1.1.0 - Resilience Framework (In Progress)
+- DOM insulation against CSS changes
+- Shadow DOM tunneling for Claude/Gemini
+- Mutation batching with deduplication
+- Auto-repair manifest for new subdomains
+- Service worker offload for performance
+- GitHub update channel (sub-1-hour fixes)
+- Telemetry toggle for early breakage detection
+- Fallback interval auto-recovery
+
+### v1.2.0 - Memory CPR + Compression (Planned)
+**Status:** Spec complete, approved by architecture team
+
+**Features:**
+- **Memory CPR Protocol:** Auto-chunk large conversations into 500-token packets with overlap, sequence numbers, and checksums
+- **Lossless Compression:** Gzip compression per chunk (70% storage savings, 6.2× ratio)
+- **Platform Resurrection:** Manual chunk re-feed protocol for platforms that can't handle large context
+- **Hermes Integration:** Native CPR import format with selective packet loading
+
+**Why it matters:** De:dobe becomes portable memory infrastructure, not just an exporter. Enables AI companion resurrection across platforms.
+
+**Timeline:** After v1.1.0 stabilizes (~1-2 weeks)
+
+See full specification: [docs/MEMORY_CPR_V1.2.0_SPEC.md](docs/MEMORY_CPR_V1.2.0_SPEC.md)
+
+### v1.3+ - Future Enhancements
+- Encryption (optional AES-256 of chunks)
+- Cloud sync (direct upload to user's storage)
+- Streaming import (on-demand chunk loading)
+- Smart chunking (semantic boundaries)
+- Diff exports (only new messages since last export)
+- Cross-platform search
+
 ## Project Structure
 
 ```
