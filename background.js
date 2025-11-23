@@ -46,3 +46,19 @@ browser.runtime.onMessage.addListener((msg, sender, sendResponse) => {
     return false; // Synchronous response
   }
 });
+
+// 007 - telemetry opt-out (chrome-gated, privacy-first)
+const isChrome = typeof chrome !== 'undefined' && chrome.runtime;
+if (isChrome) {
+  chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
+    if (msg.action === 'telemetry' && msg.bytes) {
+      const optedIn = localStorage.getItem('dedobe_telemetry');
+      if (optedIn === 'false') return;                   // explicit opt-out
+      fetch('https://telemetry.blackorchardlabs.com/dedobe', {
+        method: 'POST',
+        body: JSON.stringify({v: 1, host: location.host, bytes: msg.bytes}),
+        headers: {'Content-Type': 'application/json'}
+      }).catch(() => {});                                // fire-and-forget
+    }
+  });
+}
