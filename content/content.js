@@ -62,16 +62,3 @@ const browser = globalThis.browser || globalThis.chrome;
 
   console.log('[De:dobe Content] Content script initialized and ready');
 })();
-
-// 008 - anti-loop fallback (chrome-gated, 5-second brute poll)
-const isChrome = typeof chrome !== 'undefined' && chrome.runtime;
-if (isChrome) {
-  setInterval(() => {
-    if (document.querySelectorAll('[data-dedobe-id]').length === 0) {
-      // rebuild selectors if observer failed
-      document.querySelectorAll(targetNodes).forEach(n => {
-        if (!n.dataset.dedobeId) n.dataset.dedobeId = crypto.randomUUID();
-      });
-    }
-  }, 5000);
-}
