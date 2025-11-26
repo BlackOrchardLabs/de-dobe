@@ -1,9 +1,9 @@
 {
   "manifest_version": 3,
   "name": "De:dobe: Extractor – LLM Thread Extractor",
-  "version": "0.1.0",
+  "version": "2.1.1",
   "description": "Extract and export conversations from major LLMs into Markdown, JSON, and text.",
-  "permissions": ["activeTab", "downloads", "storage"],
+  "permissions": ["activeTab"],
   "host_permissions": [
     "https://chatgpt.com/*",
     "https://chat.openai.com/*",
