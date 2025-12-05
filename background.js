@@ -1,9 +1,27 @@
+// De:dobe v3.0.0 Background Script
 // Cross-browser compatibility
 const browser = globalThis.browser || globalThis.chrome;
 
-console.log('[De:dobe Background] Background script loaded');
+// Import decay engine for persistence
+import { DecayV3 } from './plugins/decay-v3.js';
+
+console.log('[De:dobe v3.0.0 Background] Service worker loaded');
 
 let latestConversation = null;
+
+// Initialize decay engine and run nightly decay once per session
+const decay = new DecayV3({ tier: 'temper', startHeat: 50, cooling: 5 });
+
+// Run decay on initialization (once per browser session)
+(async () => {
+  try {
+    await decay.nightlyDecay();
+    const stats = await decay.getStats();
+    console.log('[De:dobe v3.0.0 Background] Nightly decay complete:', stats);
+  } catch (error) {
+    console.error('[De:dobe v3.0.0 Background] Decay error:', error);
+  }
+})();
 
 browser.runtime.onMessage.addListener((msg, sender, sendResponse) => {
   console.log('[De:dobe Background] Message received:', msg.type, 'from:', sender.tab ? `tab ${sender.tab.id}` : 'popup');
@@ -47,18 +65,4 @@ browser.runtime.onMessage.addListener((msg, sender, sendResponse) => {
   }
 });
 
-// 007 - telemetry opt-out (chrome-gated, privacy-first)
-const isChrome = typeof chrome !== 'undefined' && chrome.runtime;
-if (isChrome) {
-  chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
-    if (msg.action === 'telemetry' && msg.bytes) {
-      const optedIn = localStorage.getItem('dedobe_telemetry');
-      if (optedIn === 'false') return;                   // explicit opt-out
-      fetch('https://telemetry.blackorchardlabs.com/dedobe', {
-        method: 'POST',
-        body: JSON.stringify({v: 1, host: location.host, bytes: msg.bytes}),
-        headers: {'Content-Type': 'application/json'}
-      }).catch(() => {});                                // fire-and-forget
-    }
-  });
-}
+// NO telemetry in v3.0.0 - bone 2 removed for clean Chrome review

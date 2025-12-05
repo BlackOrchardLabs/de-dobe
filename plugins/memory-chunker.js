@@ -30,12 +30,12 @@ export class MemoryChunker {
     return this.decay.search({ topK: 1000, minHeat: 1 });
   }
 
-  getStats() {
+  async getStats() {
     return this.decay.getStats();
   }
 
-  clear() {
-    this.decay.clear();
+  async clear() {
+    return this.decay.clear();
   }
 }
 
