@@ -68,6 +68,50 @@ function download(name, content, mime) {
   }
 }
 
+function generateAEONStub(conversation) {
+  const chunks = conversation.chunks || [];
+  const messages = conversation.messages || [];
+
+  // Calculate average heat
+  const avgHeat = chunks.length > 0
+    ? chunks.reduce((sum, c) => sum + (c.heat || 0), 0) / chunks.length
+    : 0;
+
+  // Count sentiment distribution
+  const sentimentCounts = { positive: 0, neutral: 0, negative: 0 };
+  const sentimentTrend = [];
+
+  chunks.forEach(c => {
+    sentimentTrend.push(c.sentiment || 0);
+    if (c.sentiment === 1) sentimentCounts.positive++;
+    else if (c.sentiment === -1) sentimentCounts.negative++;
+    else sentimentCounts.neutral++;
+  });
+
+  // Get opening and closing sentiment from messages
+  const openingSentiment = chunks.length > 0 ? chunks[0].sentiment || 0 : 0;
+  const closingSentiment = chunks.length > 0 ? chunks[chunks.length - 1].sentiment || 0 : 0;
+
+  return {
+    aeon_stub: {
+      version: "0.1.0",
+      heat_signature: {
+        avg_chunk_heat: Math.round(avgHeat * 100) / 100,
+        sentiment_distribution: sentimentCounts,
+        sentiment_trend: sentimentTrend
+      },
+      emotional_arc: {
+        opening_sentiment: openingSentiment,
+        closing_sentiment: closingSentiment,
+        message_count: messages.length,
+        chunk_count: chunks.length
+      },
+      ready_for_eta_extraction: true,
+      eta_schema_version: "1.0"
+    }
+  };
+}
+
 document.addEventListener("DOMContentLoaded", () => {
   console.log('[De:dobe Popup] DOM loaded, starting refresh');
   refresh();
@@ -79,12 +123,24 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
+    const includeAEON = document.getElementById("include-aeon").checked;
+
     // Format as proper markdown
     let markdown = `# ${currentConversation.platform.toUpperCase()} Conversation Export\n\n`;
     markdown += `**Exported:** ${currentConversation.meta?.timestamp || new Date().toISOString()}\n\n`;
     if (currentConversation.meta?.url) {
       markdown += `**URL:** ${currentConversation.meta.url}\n\n`;
     }
+
+    // Add AEON stub if enabled
+    if (includeAEON && currentConversation.chunks) {
+      const aeonStub = generateAEONStub(currentConversation);
+      markdown += '## AEON Stub\n\n';
+      markdown += '```json\n';
+      markdown += JSON.stringify(aeonStub, null, 2);
+      markdown += '\n```\n\n';
+    }
+
     markdown += '---\n\n';
 
     currentConversation.messages.forEach((msg, index) => {
@@ -105,7 +161,17 @@ document.addEventListener("DOMContentLoaded", () => {
       console.log('[De:dobe Popup] No conversation to export');
       return;
     }
-    download("conversation.json", JSON.stringify(currentConversation, null, 2), "application/json");
+
+    const includeAEON = document.getElementById("include-aeon").checked;
+    let exportData = { ...currentConversation };
+
+    // Add AEON stub if enabled
+    if (includeAEON && currentConversation.chunks) {
+      const aeonStub = generateAEONStub(currentConversation);
+      exportData = { ...exportData, ...aeonStub };
+    }
+
+    download("conversation.json", JSON.stringify(exportData, null, 2), "application/json");
   };
 
   document.getElementById("export-txt").onclick = () => {
@@ -114,9 +180,22 @@ document.addEventListener("DOMContentLoaded", () => {
       console.log('[De:dobe Popup] No conversation to export');
       return;
     }
-    const txt = currentConversation.messages
+
+    const includeAEON = document.getElementById("include-aeon").checked;
+    let txt = '';
+
+    // Add AEON stub if enabled
+    if (includeAEON && currentConversation.chunks) {
+      const aeonStub = generateAEONStub(currentConversation);
+      txt += '=== AEON STUB ===\n\n';
+      txt += JSON.stringify(aeonStub, null, 2);
+      txt += '\n\n=== CONVERSATION ===\n\n';
+    }
+
+    txt += currentConversation.messages
       .map(m => `${m.role.toUpperCase()}: ${m.content}`)
       .join("\n\n");
+
     download("conversation.txt", txt, "text/plain");
   };
 });
