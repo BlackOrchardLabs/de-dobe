@@ -1,4 +1,5 @@
-// Claude conversation extractor
+// Claude conversation extractor - v3.0.0
+// Updated for current Claude DOM structure (December 2025)
 window.DeDobeExtractors = window.DeDobeExtractors || {};
 
 window.DeDobeExtractors.claude = async function() {
@@ -11,33 +12,51 @@ window.DeDobeExtractors.claude = async function() {
   };
 
   try {
-    // Claude uses specific message container structure
-    const messageContainers = document.querySelectorAll('[class*="font-user"], [class*="font-claude"]');
+    // Primary selectors: Current Claude DOM structure
+    const userMessages = document.querySelectorAll('[data-testid="user-message"]');
+    const assistantMessages = document.querySelectorAll('.standard-markdown');
 
-    messageContainers.forEach(elem => {
-      const isUser = elem.className.includes('user');
-      const role = isUser ? 'user' : 'assistant';
+    // Process user messages
+    userMessages.forEach(elem => {
       const content = (elem.innerText || elem.textContent || '').trim();
-
       if (content.length > 0) {
-        messages.push({ role, content });
+        messages.push({ role: 'user', content });
       }
     });
 
-    // Alternative approach: look for data attributes or role attributes
+    // Process assistant messages
+    assistantMessages.forEach(elem => {
+      const content = (elem.innerText || elem.textContent || '').trim();
+      if (content.length > 0) {
+        messages.push({ role: 'assistant', content });
+      }
+    });
+
+    // Alternative: Try .font-claude-response-body if standard-markdown fails
+    if (messages.filter(m => m.role === 'assistant').length === 0) {
+      const altAssistant = document.querySelectorAll('.font-claude-response-body');
+      altAssistant.forEach(elem => {
+        const content = (elem.innerText || elem.textContent || '').trim();
+        if (content.length > 0) {
+          messages.push({ role: 'assistant', content });
+        }
+      });
+    }
+
+    // Fallback 1: Legacy selectors
     if (messages.length === 0) {
-      const alternativeMessages = document.querySelectorAll('[data-is-user-message], [data-is-assistant-message]');
-      alternativeMessages.forEach(msg => {
-        const isUser = msg.hasAttribute('data-is-user-message');
+      const legacyMessages = document.querySelectorAll('[class*="font-user"], [class*="font-claude"]');
+      legacyMessages.forEach(elem => {
+        const isUser = elem.className.includes('user');
         const role = isUser ? 'user' : 'assistant';
-        const content = (msg.innerText || msg.textContent || '').trim();
+        const content = (elem.innerText || elem.textContent || '').trim();
         if (content.length > 0) {
           messages.push({ role, content });
         }
       });
     }
 
-    // Fallback: generic message extraction
+    // Fallback 2: Generic message extraction
     if (messages.length === 0) {
       const genericMessages = document.querySelectorAll('main [class*="message"]');
       genericMessages.forEach((msg, index) => {
@@ -50,7 +69,7 @@ window.DeDobeExtractors.claude = async function() {
     }
 
   } catch (error) {
-    console.error('Claude extraction error:', error);
+    console.error('[De:dobe Claude] Extraction error:', error);
   }
 
   return { platform: 'claude', messages, meta };
