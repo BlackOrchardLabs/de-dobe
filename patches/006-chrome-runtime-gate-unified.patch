@@ -1,0 +1,8 @@
+--- a/content.js
++++ b/content.js
+@@ -1,5 +1,6 @@
+ (function () {
++  const isChrome = typeof chrome !== 'undefined' && chrome.runtime;
++  if (isChrome) await whenReady(); // dom + worker timing fix
+   // existing firefox path unchanged
+ })();

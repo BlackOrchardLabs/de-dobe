@@ -1,0 +1,18 @@
+--- a/background.js
++++ b/background.js
+@@ -1,5 +1,15 @@
+ self.addEventListener('install', () => self.skipWaiting());
++
++async function exportChromeSafe(blob, filename) {
++  if (!blob || blob.size === 0) {
++    blob = new Blob(['\n'], {type: 'text/plain'}); // chrome rejects empty
++  }
++  const url = URL.createObjectURL(blob);
++  await chrome.downloads.download({url, filename, saveAs: false});
++  URL.revokeObjectURL(url);
++}
++
+ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
+   if (msg.action === 'export') {
+     (async () => {
+       const tab = await chrome.tabs.query({active: true, currentWindow: true});

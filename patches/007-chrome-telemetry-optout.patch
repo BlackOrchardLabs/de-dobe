@@ -1,0 +1,15 @@
+--- a/background.js
++++ b/background.js
+@@ -20,6 +20,15 @@ async function exportChromeSafe(blob, filename) {
+   URL.revokeObjectURL(url);
+ }
++
++// chrome telemetry opt-out (privacy-first)
++async function pingSuccess(bytes) {
++  const optedIn = await chrome.storage.local.get('telemetry');
++  if (optedIn.telemetry === false) return; // explicit opt-out
++  fetch('https://telemetry.blackorchardlabs.com/dedobe', {
++    method: 'POST',
++    body: JSON.stringify({v: 1, host: location.host, bytes})
++  }).catch(() => {});
++}

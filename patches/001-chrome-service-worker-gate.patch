@@ -1,0 +1,12 @@
+--- a/manifest.json
++++ b/manifest.json
+@@ -1,7 +1,8 @@
+ {
+   "background": {
+-    "scripts": ["background.js"],
+-    "persistent": true
++    "service_worker": "background.js",
++    "type": "module"
+   },
+   "permissions": ["downloads", "activeTab"],
+   "content_scripts": [{

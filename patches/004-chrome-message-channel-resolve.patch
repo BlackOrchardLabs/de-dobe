@@ -1,0 +1,11 @@
+--- a/background.js
++++ b/background.js
+@@ -10,6 +10,7 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
+       const blob = await chrome.tabs.sendMessage(tab[0].id, {action: 'getData'});
+       await exportChromeSafe(blob, msg.filename);
++      sendResponse({ok: true}); // resolves dangling promise
+     })();
+-    return; // firefox allows implicit void
++    return true; // chrome requires explicit async response
+   }
+ });

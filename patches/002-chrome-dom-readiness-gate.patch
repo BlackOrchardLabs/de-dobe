@@ -1,0 +1,15 @@
+--- a/content.js
++++ b/content.js
+@@ -1,5 +1,15 @@
+ (function () {
++  const isChrome = typeof chrome !== 'undefined' && chrome.runtime;
++  if (isChrome) await whenReady(); // dom + worker timing fix
++
++  async function whenReady() {
++    return new Promise(res => {
++      if (document.body) return res();
++      new MutationObserver(() => {
++        if (document.body) { res(); observer.disconnect(); }
++      }).observe(document.documentElement, {childList: true});
++    });
++  }
