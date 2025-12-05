@@ -79,18 +79,71 @@ function generateAEONStub(conversation) {
 
   // Count sentiment distribution
   const sentimentCounts = { positive: 0, neutral: 0, negative: 0 };
-  const sentimentTrend = [];
+  const sentiments = [];
 
   chunks.forEach(c => {
-    sentimentTrend.push(c.sentiment || 0);
-    if (c.sentiment === 1) sentimentCounts.positive++;
-    else if (c.sentiment === -1) sentimentCounts.negative++;
+    const sentiment = c.sentiment || 0;
+    sentiments.push(sentiment);
+    if (sentiment === 1) sentimentCounts.positive++;
+    else if (sentiment === -1) sentimentCounts.negative++;
     else sentimentCounts.neutral++;
   });
 
-  // Get opening and closing sentiment from messages
-  const openingSentiment = chunks.length > 0 ? chunks[0].sentiment || 0 : 0;
-  const closingSentiment = chunks.length > 0 ? chunks[chunks.length - 1].sentiment || 0 : 0;
+  // Calculate sentiment summary
+  const openingSentiment = sentiments.length > 0 ? sentiments[0] : 0;
+  const closingSentiment = sentiments.length > 0 ? sentiments[sentiments.length - 1] : 0;
+
+  // Find peak positive and negative clusters (3-message windows)
+  let peakPositiveIndex = 0;
+  let peakNegativeIndex = 0;
+  let maxPositiveCluster = -Infinity;
+  let maxNegativeCluster = Infinity;
+
+  for (let i = 0; i < sentiments.length - 2; i++) {
+    const cluster = sentiments[i] + sentiments[i + 1] + sentiments[i + 2];
+    if (cluster > maxPositiveCluster) {
+      maxPositiveCluster = cluster;
+      peakPositiveIndex = i + 1; // Center of cluster
+    }
+    if (cluster < maxNegativeCluster) {
+      maxNegativeCluster = cluster;
+      peakNegativeIndex = i + 1;
+    }
+  }
+
+  // Calculate overall trend
+  const midpoint = Math.floor(sentiments.length / 2);
+  const firstHalf = sentiments.slice(0, midpoint);
+  const secondHalf = sentiments.slice(midpoint);
+
+  const firstAvg = firstHalf.length > 0
+    ? firstHalf.reduce((sum, s) => sum + s, 0) / firstHalf.length
+    : 0;
+  const secondAvg = secondHalf.length > 0
+    ? secondHalf.reduce((sum, s) => sum + s, 0) / secondHalf.length
+    : 0;
+
+  const trendDiff = secondAvg - firstAvg;
+
+  // Calculate variance for volatility detection
+  const mean = sentiments.reduce((sum, s) => sum + s, 0) / (sentiments.length || 1);
+  const variance = sentiments.reduce((sum, s) => sum + Math.pow(s - mean, 2), 0) / (sentiments.length || 1);
+
+  let overallTrend;
+  if (variance > 0.5) {
+    overallTrend = "volatile";
+  } else if (trendDiff > 0.2) {
+    overallTrend = "rising";
+  } else if (trendDiff < -0.2) {
+    overallTrend = "falling";
+  } else {
+    overallTrend = "stable";
+  }
+
+  // Calculate ratios
+  const total = chunks.length || 1;
+  const positiveRatio = Math.round((sentimentCounts.positive / total) * 100) / 100;
+  const negativeRatio = Math.round((sentimentCounts.negative / total) * 100) / 100;
 
   return {
     aeon_stub: {
@@ -98,7 +151,15 @@ function generateAEONStub(conversation) {
       heat_signature: {
         avg_chunk_heat: Math.round(avgHeat * 100) / 100,
         sentiment_distribution: sentimentCounts,
-        sentiment_trend: sentimentTrend
+        sentiment_summary: {
+          opening_sentiment: openingSentiment,
+          closing_sentiment: closingSentiment,
+          peak_positive_index: peakPositiveIndex,
+          peak_negative_index: peakNegativeIndex,
+          overall_trend: overallTrend,
+          positive_ratio: positiveRatio,
+          negative_ratio: negativeRatio
+        }
       },
       emotional_arc: {
         opening_sentiment: openingSentiment,
