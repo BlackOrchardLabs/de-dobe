@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "De:dobe: Extractor – LLM Thread Extractor",
-  "version": "2.1.1",
+  "version": "3.0.0",
   "description": "Extract and export conversations from major LLMs into Markdown, JSON, and text. Your data belongs to you.",
   "author": "Black Orchard Labs",
   "homepage_url": "https://github.com/BlackOrchardLabs/de-dobe",

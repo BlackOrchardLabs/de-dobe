@@ -1,4 +1,5 @@
-// Gemini conversation extractor
+// Gemini conversation extractor - v3.0.0
+// Updated for Google's new Angular DOM structure (December 2025)
 window.DeDobeExtractors = window.DeDobeExtractors || {};
 
 window.DeDobeExtractors.gemini = async function() {
@@ -11,26 +12,38 @@ window.DeDobeExtractors.gemini = async function() {
   };
 
   try {
-    // Gemini uses message-content class structure
-    const userMessages = document.querySelectorAll('[data-test-id="user-message"], .user-message');
-    const modelMessages = document.querySelectorAll('[data-test-id="model-message"], .model-message');
+    // Google rebuilt Gemini with Angular custom elements
+    // Primary selectors: Angular custom elements
+    const angularMessages = document.querySelectorAll('user-query, model-response');
 
-    // Combine and sort by DOM order
-    const allMessages = [...userMessages, ...modelMessages].sort((a, b) => {
-      return a.compareDocumentPosition(b) & Node.DOCUMENT_POSITION_FOLLOWING ? -1 : 1;
-    });
+    if (angularMessages.length > 0) {
+      angularMessages.forEach(elem => {
+        const role = elem.tagName.toLowerCase() === 'user-query' ? 'user' : 'assistant';
+        const content = (elem.innerText || elem.textContent || '').trim();
 
-    allMessages.forEach(elem => {
-      const isUser = elem.matches('[data-test-id="user-message"], .user-message');
-      const role = isUser ? 'user' : 'assistant';
-      const content = (elem.innerText || elem.textContent || '').trim();
+        if (content.length > 0) {
+          messages.push({ role, content });
+        }
+      });
+    }
 
-      if (content.length > 0) {
-        messages.push({ role, content });
-      }
-    });
+    // Fallback 1: Content-based selectors
+    if (messages.length === 0) {
+      const fallbackMessages = document.querySelectorAll('user-query-content, .query-text-line, .model-response-text');
+      fallbackMessages.forEach((elem, index) => {
+        const content = (elem.innerText || elem.textContent || '').trim();
+        if (content.length > 0) {
+          // Try to determine role from parent structure
+          const parent = elem.closest('user-query, model-response');
+          const role = parent
+            ? (parent.tagName.toLowerCase() === 'user-query' ? 'user' : 'assistant')
+            : (index % 2 === 0 ? 'user' : 'assistant');
+          messages.push({ role, content });
+        }
+      });
+    }
 
-    // Fallback: generic extraction
+    // Fallback 2: Generic extraction (old structure compatibility)
     if (messages.length === 0) {
       const genericMessages = document.querySelectorAll('[class*="message-content"], [class*="conversation"] > div');
       genericMessages.forEach((msg, index) => {
@@ -43,7 +56,7 @@ window.DeDobeExtractors.gemini = async function() {
     }
 
   } catch (error) {
-    console.error('Gemini extraction error:', error);
+    console.error('[De:dobe Gemini] Extraction error:', error);
   }
 
   return { platform: 'gemini', messages, meta };
