@@ -1,0 +1,17 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git clone:*)",
+      "Bash(dir:*)",
+      "Bash(if [ -d .git ])",
+      "Bash(then echo \"=== AEON Particle Lab (has git) ===\")",
+      "Bash(else echo \"=== AEON Particle Lab (NO GIT - needs init) ===\")",
+      "Bash(fi)",
+      "Bash(git init:*)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}
