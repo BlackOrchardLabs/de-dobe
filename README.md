@@ -2,7 +2,7 @@
 
 > *Measuring the Unmeasurable*
 >
-> We developed novel memory architecture with an emphasis on personality integration.
+> We develop novel memory architecture with an emphasis on personality integration.
 
 [![Ko-fi](https://img.shields.io/badge/Support%20on-Ko--fi-FF5E5B?logo=ko-fi&logoColor=white)](https://ko-fi.com/blackorchardlabs)
 
@@ -288,7 +288,7 @@ See existing extractors for reference implementations.
 
 > *Measuring the Unmeasurable*
 >
-> We developed novel memory architecture with an emphasis on personality integration.
+> We develop novel memory architecture with an emphasis on personality integration.
 
 Building tools for data autonomy. Your conversations, your voice, your identity - under YOUR control.
 
