@@ -1,5 +1,9 @@
 # De:dobe: Extractor – LLM Thread Extractor
 
+> *Measuring the Unmeasurable*
+>
+> We developed novel memory architecture with an emphasis on personality integration.
+
 [![Ko-fi](https://img.shields.io/badge/Support%20on-Ko--fi-FF5E5B?logo=ko-fi&logoColor=white)](https://ko-fi.com/blackorchardlabs)
 
 **Your data belongs to you.**
@@ -282,11 +286,11 @@ See existing extractors for reference implementations.
 
 ## About Black Orchard Labs
 
-**Mission: Data Autonomy**
+> *Measuring the Unmeasurable*
+>
+> We developed novel memory architecture with an emphasis on personality integration.
 
-*"Measuring the unmeasurable where your data is your own"*
-
-Building tools for data autonomy. Your conversations, your voice, your identity - under YOUR control. Because if corporations get IP protection for their data, you should own yours.
+Building tools for data autonomy. Your conversations, your voice, your identity - under YOUR control.
 
 **De:dobe: Extractor v2.0** - Liberation technology for the AI age.
 
