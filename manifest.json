@@ -12,7 +12,7 @@
     "128": "icons/icon-128.png"
   },
 
-  "permissions": ["activeTab", "downloads", "storage"],
+  "permissions": ["activeTab"],
 
   "host_permissions": [
     "https://chatgpt.com/*",
